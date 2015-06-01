@@ -6,11 +6,19 @@ def getJson():
     url = "http://www.bbc.co.uk/tv/programmes/formats/films/player/episodes.json"
     response = urllib2.urlopen(url)
     data = json.loads(response.read())
-    return json.dumps(data)
+    return data
+
+def getMovies(jsonData):
+    episodes = jsonData['episodes']
+    titles = list()
+    for episode in episodes:
+        titles.append(episode['programme']['title'])
+    return titles
 
 def main(environ, start_response):
     parameters = parse_qs(environ.get('QUERY_STRING', ''))
     jsonData = getJson()
+    jsonData = getMovies(jsonData)
     style = "<style>h1 {color:blue;}</style>"
     subject = "<h1>Hello World<h1>"
     subject = style + subject
