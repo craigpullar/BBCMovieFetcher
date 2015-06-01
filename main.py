@@ -22,18 +22,29 @@ def getRatings(titles):
     for title in titles:
         response = search.movie(query=title)
         result[title] = response['results'][0]['vote_average']
-    return json.dumps(result)
+    return result
+
+def formatData(data):
+    html = "<html>"
+    for title in data:
+        html += "<h2>"
+        html += json.dumps(title)[1:-1]
+        html += "</h2>"
+        html += "<h3>"
+        html += json.dumps(data[title])
+        html += "</h3>"
+    html += "</html>"
+    return html
+
 
 def main(environ, start_response):
     parameters = parse_qs(environ.get('QUERY_STRING', ''))
     jsonData = getJson()
     titles = getMovies(jsonData)
-    ratings = getRatings(titles)
-    style = "<style>h1 {color:blue;}</style>"
-    subject = "<h1>Hello World<h1>"
-    subject = style + subject
+    data = getRatings(titles)
+    data = formatData(data)
     start_response('200 OK', [('Content-Type', 'text/html')])
-    return [ratings]
+    return [data]
 
 if __name__ == '__main__':
     from wsgiref.simple_server import make_server
