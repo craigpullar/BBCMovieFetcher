@@ -24,15 +24,50 @@ def getRatings(titles):
         result[title] = response['results'][0]['vote_average']
     return result
 
+def styleData():
+    style = """
+    <link href='http://fonts.googleapis.com/css?family=Righteous' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Raleway' rel='stylesheet' type='text/css'>
+    <style>
+    html {
+    background-color:#E8E8E8;
+    }
+    h1 {
+    font-family: 'Righteous', cursive;
+    text-align:center;
+    padding:70px;
+    background-color:#559e83;
+    margin:0;
+    color: white;
+    font-size:30pt;
+    }
+    h2 {
+    font-family: 'Raleway', sans-serif;
+    text-align:center;
+    padding:30px;
+    background-color:#AE5A41;
+    margin:0;
+    color:white;
+    font-weight:normal;
+    }
+    span {
+    font-size:16;
+    margin-left:10px;
+    }
+    </style>
+    """
+    return style
+
 def formatData(data):
     html = "<html>"
+    html += styleData()
+    html += "<h1>FILMS</h1><hr />"
     for title in data:
         html += "<h2>"
         html += json.dumps(title)[1:-1]
-        html += "</h2>"
-        html += "<h3>"
+        html += "<span>"
         html += json.dumps(data[title])
-        html += "</h3>"
+        html += "/10</span></h2><hr />"
     html += "</html>"
     return html
 
